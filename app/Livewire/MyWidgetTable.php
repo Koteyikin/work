@@ -17,10 +17,8 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Hidden;
 use Filament\Actions\Action;
 use Filament\Actions\ActionGroup;
-
-
-
-
+use Filament\Actions\ViewAction;
+use Filament\Actions\DeleteAction;
 
 class MyWidgetTable extends TableWidget
 {
@@ -117,14 +115,14 @@ class MyWidgetTable extends TableWidget
                         TextInput::make('description')
                         ->label('Описание')
                         ->required(),
-                        Select::make('status')
-                        ->label('Статус')
-                        ->options([
-                            'new' => 'Новая',
-                            'atWork' => 'работе',
-                            'completed' => 'Завершенная',
-                        ])
-                        ->required(),
+//                        Select::make('status')
+//                        ->label('Статус')
+//                        ->options([
+//                            'new' => 'Новая',
+//                            'atWork' => 'работе',
+//                            'completed' => 'Завершенная',
+//                        ])
+//                        ->required(),
                         TextInput::make('priority')
                         ->label('Приоритет')
                         ->required(),
@@ -151,8 +149,49 @@ class MyWidgetTable extends TableWidget
                         Hidden::make('user_id')
                         ->default(auth()->id())
                     ]),
-                    Action::make('Просмотреть'),
-                    Action::make('Удалить'),
+                    ViewAction::make('Просмотреть')
+                    ->schema([
+                        TextInput::make('title')
+                            ->label('Название')
+                            ->required(),
+                        TextInput::make('description')
+                            ->label('Описание')
+                            ->required(),
+                        Select::make('status')
+                            ->label('Статус')
+                            ->options([
+                                'new' => 'Новая',
+                                'atWork' => 'работе',
+                                'completed' => 'Завершенная',
+                            ])
+                            ->required(),
+                        TextInput::make('priority')
+                            ->label('Приоритет')
+                            ->required(),
+                        DatePicker::make('deadline')
+                            ->label('Дедлайн')
+                            ->required()
+                            ->format('Y-m-d'),
+                        Select::make('project_id')
+                            ->label('Проект')
+                            ->noOptionsMessage('Нету созданных проектов')
+                            ->noSearchResultsMessage('Нету проекта с таким названием')
+                            ->loadingMessage('Загрузка проектов ')
+                            ->searchable()
+                            ->options(function () {
+                                return Project::pluck('title', 'id');
+                            })
+                            ->getSearchResultsUsing(function ($value){
+                                return Project::where('title', 'like', "%{$value}%")
+                                    ->pluk('title', 'id');
+                            })
+                            ->getOptionLabelUsing(function ($value) {
+                                return Project::find($value)->title;
+                            }),
+                        TextInput::make('user_id')
+                            ->default(auth()->id())
+                    ]),
+                    DeleteAction::make('Удалить'),
 
                 ])
             ])
