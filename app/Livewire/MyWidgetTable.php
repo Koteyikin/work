@@ -66,15 +66,15 @@ class MyWidgetTable extends TableWidget
                         ->required()
                         ->maxLength(255)
                         ->label('описание'),
-//                        Select::make('statuses')
-//                        ->label('Статус')
-//                        ->options([
-//                            'new' => 'новая',
-//                            'atWork' => 'в работе',
-//                            'completed' => 'завершенная'
-//                        ])
-//                        ->noOptionsMessage('Нету статусов')
-//                        ->required(),
+                        Select::make('status')
+                        ->label('Статус')
+                        ->options([
+                            'новая' => 'новая',
+                            'в работе' => 'в работе',
+                            'выполнена' => 'выполнена'
+                        ])
+                        ->noOptionsMessage('Нету статусов')
+                        ->required(),
                         TextInput::make('priority')
                         ->label('Приоритет')
                         ->required()
@@ -115,14 +115,14 @@ class MyWidgetTable extends TableWidget
                         TextInput::make('description')
                         ->label('Описание')
                         ->required(),
-//                        Select::make('status')
-//                        ->label('Статус')
-//                        ->options([
-//                            'new' => 'Новая',
-//                            'atWork' => 'работе',
-//                            'completed' => 'Завершенная',
-//                        ])
-//                        ->required(),
+                        Select::make('status')
+                        ->label('Статус')
+                        ->options([
+                            'новая' => 'новая',
+                            'в работе' => 'в работе',
+                            'выполнена' => 'выполнена'
+                        ])
+                        ->required(),
                         TextInput::make('priority')
                         ->label('Приоритет')
                         ->required(),
@@ -160,9 +160,9 @@ class MyWidgetTable extends TableWidget
                         Select::make('status')
                             ->label('Статус')
                             ->options([
-                                'new' => 'Новая',
-                                'atWork' => 'работе',
-                                'completed' => 'Завершенная',
+                                'новая' => 'новая',
+                                'в работе' => 'в работе',
+                                'выполнена' => 'выполнена'
                             ])
                             ->required(),
                         TextInput::make('priority')
