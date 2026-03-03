@@ -1,4 +1,3 @@
-
 <div class="bg-gray-50 dark:bg-gray-800 p-4 rounded-lg shadow-md w-full mt-10">
     <div class="flex items-center justify-between mb-4">
         <h2 class="text-xl font-semibold text-gray-800 dark:text-white">Всяческие обсуждения</h2>
@@ -57,3 +56,4 @@
         </table>
     </div>
 </div>
+

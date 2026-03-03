@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('tasks', function (Blueprint $table) {
-           $table->id();
-           $table->string('title');
-           $table->text('description');
-           $table->enum('statuses', ['новая', 'в работе', 'выполнена'])->default('новая');
-       });
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->foreignId('project_id')->constrained('projects');
+            $table->timestamp('created_at')->nullable();
+            $table->timestamp('updated_at')->nullable();
+
+        });
     }
 
     /**
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('tasks', function (Blueprint $table) {});
     }
 };

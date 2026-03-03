@@ -13,7 +13,7 @@
                 </h2>
                 <p class="mt-2 text-center text-sm text-gray-600">
                     Don't have an account?
-                    <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    <a href="{{ route('register') }}" class="font-medium text-indigo-600 hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500">
                         Sign up for free
                     </a>
                 </p>

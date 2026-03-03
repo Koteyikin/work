@@ -1,3 +1,4 @@
+@auth()
 
     <nav x-data="{ mobileMenuOpen: false }" class="bg-gray-50 dark:bg-gray-900 shadow-md print:hidden">
         <div class="container mx-auto px-4 md:px-6 lg:px-8">
@@ -81,3 +82,4 @@
             </div>
         </div>
     </nav>
+@endauth

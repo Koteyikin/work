@@ -1,0 +1,167 @@
+<?php
+
+namespace App\Livewire;
+
+use App\Models\Project;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
+use Filament\Tables\Table;
+use Filament\Widgets\TableWidget;
+use Illuminate\Database\Eloquent\Builder;
+use App\Models\Task;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Actions\CreateAction;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Hidden;
+use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
+
+
+
+
+
+class MyWidgetTable extends TableWidget
+{
+    protected int | string | array $columnSpan = 'full';
+    public function table(Table $table): Table
+    {
+        return $table
+            ->query(fn (): Builder => Task::query())
+
+            ->columns([
+                TextColumn::make('title')
+                ->label('Название')
+                ->searchable(),
+                TextColumn::make('description')
+                ->label('описание')
+                ->searchable()
+                ->width('5%'),
+                TextColumn::make('status')
+                ->label('Статус')
+                ->sortable(),
+                TextColumn::make('priority')
+                ->label('Приоритет')
+                ->numeric()
+                ->sortable(),
+                TextColumn::make('deadline')
+                ->label('Дедлайн')
+                ->date(),
+                TextColumn::make('project_id ')
+                ->label('Проект'),
+                TextColumn::make('user_id')
+                ->label('Исполнитель')
+
+            ])
+            ->filters([
+                //
+            ])
+            ->headerActions([
+                CreateAction::make()
+                    ->schema([
+                        TextInput::make('title')
+                        ->label('Название')
+                        ->required()
+                        ->maxLength(255),
+                        TextInput::make('description')
+                        ->required()
+                        ->maxLength(255)
+                        ->label('описание'),
+//                        Select::make('statuses')
+//                        ->label('Статус')
+//                        ->options([
+//                            'new' => 'новая',
+//                            'atWork' => 'в работе',
+//                            'completed' => 'завершенная'
+//                        ])
+//                        ->noOptionsMessage('Нету статусов')
+//                        ->required(),
+                        TextInput::make('priority')
+                        ->label('Приоритет')
+                        ->required()
+                        ->numeric(),
+                        DatePicker::make('deadline')
+                        ->label('Дедлайн')
+                        ->required()
+                        ->format('Y-m-d'),
+                        Select::make('project_id')
+                        ->label('Проект')
+                        ->noOptionsMessage('Нету созданных проектов')
+                        ->noSearchResultsMessage('Нету проекта с таким названием')
+                        ->loadingMessage('Загрузка проектов ')
+                        ->searchable()
+                        ->options(function () {
+                            return Project::pluck('title', 'id');
+                        })
+                        ->getSearchResultsUsing(function ($value){
+                            return Project::where('title', 'like', "%{$value}%")
+                                ->pluk('title', 'id');
+                        })
+                        ->getOptionLabelUsing(function ($value) {
+                            return Project::find($value)->title;
+                        }),
+                        Hidden::make('user_id')
+                        ->default(auth()->id())
+                    ])
+            ])
+
+            ->recordActions([
+
+                ActionGroup::make([
+                    EditAction::make('Отредактировать')
+                    ->schema([
+                        TextInput::make('title')
+                        ->label('Название')
+                        ->required(),
+                        TextInput::make('description')
+                        ->label('Описание')
+                        ->required(),
+                        Select::make('status')
+                        ->label('Статус')
+                        ->options([
+                            'new' => 'Новая',
+                            'atWork' => 'работе',
+                            'completed' => 'Завершенная',
+                        ])
+                        ->required(),
+                        TextInput::make('priority')
+                        ->label('Приоритет')
+                        ->required(),
+                        DatePicker::make('deadline')
+                        ->label('Дедлайн')
+                        ->required()
+                        ->format('Y-m-d'),
+                        Select::make('project_id')
+                        ->label('Проект')
+                        ->noOptionsMessage('Нету созданных проектов')
+                        ->noSearchResultsMessage('Нету проекта с таким названием')
+                        ->loadingMessage('Загрузка проектов ')
+                        ->searchable()
+                        ->options(function () {
+                            return Project::pluck('title', 'id');
+                        })
+                        ->getSearchResultsUsing(function ($value){
+                            return Project::where('title', 'like', "%{$value}%")
+                                ->pluk('title', 'id');
+                        })
+                        ->getOptionLabelUsing(function ($value) {
+                            return Project::find($value)->title;
+                        }),
+                        Hidden::make('user_id')
+                        ->default(auth()->id())
+                    ]),
+                    Action::make('Просмотреть'),
+                    Action::make('Удалить'),
+
+                ])
+            ])
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    //
+                ]),
+
+            ]);
+    }
+
+}

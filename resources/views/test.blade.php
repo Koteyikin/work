@@ -1,8 +1,10 @@
 @extends('layouts.main')
 
-@section('title', 'Страница с задачами')
+@section('title', 'Домашняя страница')
 
 @section('body')
+
+
 
 
 @endsection
