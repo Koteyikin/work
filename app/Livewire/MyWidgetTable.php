@@ -26,9 +26,9 @@ class MyWidgetTable extends TableWidget
     public function table(Table $table): Table
     {
         return $table
+            ->heading('Таблица с задачами')
             ->query(fn (): Builder => Task::query())
-
-            ->columns([
+        ->columns([
                 TextColumn::make('title')
                 ->label('Название')
                 ->searchable(),
@@ -45,8 +45,9 @@ class MyWidgetTable extends TableWidget
                 ->sortable(),
                 TextColumn::make('deadline')
                 ->label('Дедлайн')
+                ->sortable()
                 ->date(),
-                TextColumn::make('project_id ')
+                TextColumn::make('project_id')
                 ->label('Проект'),
                 TextColumn::make('user_id')
                 ->label('Исполнитель')

@@ -22,6 +22,7 @@ class MyWidgetProjectTable extends TableWidget
     {
 
         return $table
+            ->heading('Таблица с проектами')
             ->query(fn (): Builder => Project::query())
             ->columns([
                 TextColumn::make('title'),
