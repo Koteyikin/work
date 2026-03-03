@@ -2,6 +2,7 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Widgets\MyWidgetProjectTable;
 use App\Livewire\MyWidgetTable;
 use App\Models\Task;
 use Filament\Pages\Page;
@@ -16,7 +17,8 @@ class Settings extends Page
     protected function getFooterWidgets(): array
     {
         return [
-            MyWidgetTable::class
+            MyWidgetTable::class,
+            MyWidgetProjectTable::class
         ];
     }
 }
