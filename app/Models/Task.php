@@ -2,10 +2,18 @@
 
 namespace App\Models;
 
+use Database\Factories\TaskFactory;
+use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+
+ // Добавьте HasFactory сюда
+
+#[UseFactory(TaskFactory::class)]
 class Task extends Model
 {
+    use HasFactory;
     protected $table = 'tasks';
     protected $fillable = [
       'title',
