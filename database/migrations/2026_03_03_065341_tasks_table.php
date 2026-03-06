@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('priority');
             $table->date('deadline');
             $table->foreignId('user_id')->constrained('users');
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -28,5 +30,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('tasks');
+        Schema::table('tasks', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
     }
 };

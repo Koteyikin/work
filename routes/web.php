@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SendEmailController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use Illuminate\Http\Request;
@@ -12,11 +13,5 @@ Route::get('/', [HomeController::class, 'index'])->name("home")->middleware("aut
 Route::resource('tasks', \App\Http\Controllers\TasksController::class)
     ->missing(function (Request $request) {
     return Redirect::route('tasks.index');
-})->names([
-    'create' => 'tasks.create',
-    'store' => 'tasks.store',
-    'edit' => 'tasks.edit',
-    'update' => 'tasks.update',
-    'destroy' => 'tasks.destroy',
-    'index' => 'tasks',
-    ]);
+});
+Route::post('/email', [SendEmailController::class, 'store'])->name('email.store');

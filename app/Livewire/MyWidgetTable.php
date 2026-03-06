@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Mail\CustomMail;
 use App\Models\Project;
 use App\Models\Task;
 use Filament\Actions\EditAction;
@@ -15,10 +16,12 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Get;
+use Filament\Notifications\Notification;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Widgets\TableWidget;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\Mail;
 
 
 class MyWidgetTable extends TableWidget
@@ -80,6 +83,25 @@ class MyWidgetTable extends TableWidget
                 //
             ])
             ->headerActions([
+                Action::make('send email')
+
+                ->form([
+                    TextInput::make('email')
+                    ->email()
+                    ->label('Email получателя')
+                    ->required(),
+                ])
+                ->action(function (array $data, $record): void {
+                    Mail::to($data['email'])->send(new CustomMail([
+                        'user' => $record,
+                        'message' => $data['message'] ?? null,
+                    ]));
+                Notification::make()
+                    ->title('Успешно')
+                    ->body('Письмо отправлено на '. $data['email'])
+                    ->send();
+                })
+                ->label('Отправить письмо'),
                 Action::make('create')
                     ->label('Новая задача')
                     ->icon('heroicon-m-plus')
@@ -137,6 +159,7 @@ class MyWidgetTable extends TableWidget
                     ->action(function (array $data): void {
                         Task::create($data);
                     })
+//                Action:make('отправка письма на почту ')
             ])
             ->recordActions([
                 ActionGroup::make([

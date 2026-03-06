@@ -6,14 +6,17 @@ use Database\Factories\TaskFactory;
 use Illuminate\Database\Eloquent\Attributes\UseFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
- // Добавьте HasFactory сюда
+// Добавьте HasFactory сюда
 
 #[UseFactory(TaskFactory::class)]
 class Task extends Model
 {
     use HasFactory;
+    use SoftDeletes;
+
     protected $table = 'tasks';
     protected $fillable = [
       'title',
